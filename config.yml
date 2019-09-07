@@ -1,0 +1,138 @@
+# You can find the default config with description of parameters here:
+# https://github.com/arboriginal/DeathCadaver/blob/master/config.yml
+#
+# Note: When you see something like that: « {something} », it means this part will be
+#       dynamically replaced by a value. So, do not modify the word inside brackets.
+
+cadavers:
+  lootable_after: 900                # Time (in seconds) before a cadaver become lootable by everybody
+  displayed_name: "&f☠ {player} &f☠" # Nametag of the cadaver, {player} will use the displayname of player
+  glowing: true                      # true or false, if true the cadaver will glowing
+  gravity: false                     # true or false, if true the cadaver is subject to gravity
+  small: false                       # true or false, if true the cadaver will have a small size
+  visible_name: true                 # true or false, if true the cadaver will have a nametag
+  with_arms: true                    # true or false, if true the cadaver will have arms
+  with_base: false                   # true or false, if true the cadaver will have a baseplate
+  retain_xp: 0.8                     # multiplier of XP retainer in the cadaver. 0 = nothing, 1 = 100%.
+
+  position: # Relative position to the player where the cadaver will spawn
+    x: 0
+    y: -1.5
+    z: 0
+
+  pose: # ArmorStand part rotations (Euler angle: radian float value)
+    head:
+      x: 0.7
+      y: 0
+      z: 0
+    body:
+      x: 0.1
+      y: 0
+      z: 0
+    arm_left:
+      x: 0
+      y: 0
+      z: 0
+    arm_right:
+      x: 0
+      y: 0
+      z: 0
+    leg_left:
+      x: 0
+      y: 0
+      z: 0
+    leg_right:
+      x: 0
+      y: 0
+      z: 0
+
+  # item: See https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+  #   but as you can imagine, all material cannot works: You cannot put a stone block as chestplate for example.
+  # fixed: if false, if the player wear something, use it instead
+  equipment:
+    head:
+      item: PLAYER_HEAD
+      fixed: true
+    body:
+      item: CHAINMAIL_CHESTPLATE
+      fixed: false
+    hand:
+      item: AIR
+      fixed: false
+    legs:
+      item: CHAINMAIL_LEGGINGS
+      fixed: false
+    boots:
+      item: LEATHER_BOOTS
+      fixed: false
+
+# Cleanup tasks are important because each cadaver count as an entity, and the more your server has entities to track,
+# the more it requires memory. In Minecraft, players are entities, mobs are entities, items on the ground are entities, ...
+#
+# An important thing: The cleanup task will only remove old cadavers which are loaded.
+# -------------------                                   ------------------------------
+# A cadaver is loaded if it's in a loaded chunk. Cadavers in chunks not loaded are not visible by the server (until the chunk loads).
+#
+# You can choose to keep cadavers when their owners don't want to take time recover their inventory,
+# like "random treasure chests" on your maps, but keep in mind the remark about number of entities.
+# So, you should at least clean cadavers older than a few days, except if your players and/or gameplay don't produce lots of them.
+# If your server is mostly PVP, you will probably have lots of corpses...
+#
+# Anyway, for better performance I recommand you to adjust those values for your needs and not keep default ones.
+# (In this section, all numeric value are seconds if not specified.)
+cleanup:
+  # Used when a cadaver is loaded, to remove the cadaver from the map if older
+  olderthan: 1200
+  # Parameters for /dc-cleanup command
+  command:
+    default_olderthan: 1200 # used when not specified
+    max_radius: 100         # (in blocs) max value allowed for a cleanup using a radius
+  # Periodic cleanup, mostly useful for perma-loaded chunks (like a spawn or highly frequented area)
+  periodically:
+    enabled: true  # true (active) or false (inactive)
+    wait: 300      # delay after a start/reload before to begin this running task
+    frequency: 600
+    olderthan: 1200
+
+# Advanced use... Because I'm sure some admins will want specific actions, and I have no time to code every cases :)
+# This section allows you to run custom commands when the player dies and when he retrieves his inventory.
+# So, what happens at those moments is up to you.
+#
+# Available placeholders are:
+# - {player}  The player name
+# - {world}   The player world
+# - {x}, {y} and {z}
+#
+# Here are some examples:
+# command_as_player:
+#   - say Goodby cruel world!
+#   - msg admin You're server sucks :(
+# command_as_server:
+#   - tp {player} 0 70 0
+#   - tell {player} You died at {x}/{y}/{z} ({world})
+events:
+  onDeath:
+    commands_as_player: []
+    commands_as_server: []
+  onBreakCadaver:
+    commands_as_player: []
+    commands_as_server: []
+
+messages: # Use « & » codes to format and colorize your texts (https://wiki.ess3.net/mc)
+  prefix: "&8[&c&lDeathCadaver&8] "
+  configuration_reloaded: "{prefix}&aConfiguration reloaded."
+  cleanup_starting: "{prefix}&aCleanup task begins in world « {world} »..."
+  cleanup_executed: |
+    {prefix}&aCleanup done in world « {world} »:
+    &7{removed} cadavers removed, {notloaded} ignored (not loaded) / {left} left.
+  error_creating_file_to_player: "{prefix}&cThere were an error saving your inventory... Cadaver cancelled."
+  radius_cleanup_starting: "{prefix}&aCleanup task begins {radius} blocks around..."
+  radius_cleanup_executed: |
+    {prefix}&aCleanup done {radius} blocks around:
+    &7{removed} cadavers removed / {left} left.
+  error_creating_file_to_player: "{prefix}&cThere were an error saving your inventory... Cadaver cancelled."
+  error_creating_file: "{prefix}&cCan't create the file « &e{file} &c»."
+  error_deleting_file: "{prefix}&cCan't delete the file « &e{file} &c»."
+  error_reading_folder: "{prefix}&cCan't read files from folder « &e{folder} &c»."
+  error_wrong_arguments: "{prefix}&cInvalid arguments."
+  error_radius_too_big: "{prefix}&cThe given radius is too big."

@@ -1,0 +1,45 @@
+name: DeathCadaver
+description: Spawn a cadaver at your death place.
+version: 1.0
+
+author: arboriginal
+website: https://www.spigotmc.org/resources/deathcadaver.71120/
+dev-url: https://github.com/arboriginal/DeathCadaver
+
+depend: [ ]
+softdepend: [ ]
+
+api-version: 1.14
+database: true
+
+main: me.arboriginal.DeathCadaver.DCPlugin
+
+commands:
+  dc-cleanup:
+    description: Execute a manual cleanup (on loaded cadavers)
+    permission: dc.cleanup
+    usage: "/dc-cleanup [world|radius] [olderthan(sec)]"
+    # /dc-cleanup <radius> is only usable by players, not in console.
+
+  dc-reload:
+    description: Reload DeathCadaver configuration
+    permission: dc.reload
+
+permissions:
+  dc.cleanup:
+    description: Allows to cleanup manually.
+    default: op
+
+  dc.reload:
+    description: Allows to reload the configuration.
+    default: op
+
+  dc.dc.bypass_loot_timer:
+    description: Allows to loot cadavers without waiting they become public.
+    default: op
+
+  dc.world.*:
+    description: Allows to spawn a cadaver on death, whatever the world 
+    default: true
+  # You can use dc.world.<world_name> if you want to restrict by world.
+  # (In this case, do not forget to remove dc.world.* permission.)
