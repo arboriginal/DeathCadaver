@@ -49,6 +49,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+// TODO: Consume an object to get items back
+
 public class DCPlugin extends JavaPlugin implements Listener, TabCompleter {
   private FileConfiguration                        config;
   private BukkitTask                               task     = null;
@@ -311,7 +313,7 @@ public class DCPlugin extends JavaPlugin implements Listener, TabCompleter {
 
     sendMessage(sender, "cleanup_starting", placeholders);
 
-    String         regex  = "^(\\d+)@([0-9\\-]+)\\|([0-9\\-]+)\\|([0-9\\-]+)\\.yml$";
+    String         regex  = "^(\\d+)_([0-9\\-]+)_([0-9\\-]+)_([0-9\\-]+)\\.yml$";
     FilenameFilter filter = new FilenameFilter() {
                             @Override
                             public boolean accept(File dir, String name) {
@@ -553,7 +555,7 @@ public class DCPlugin extends JavaPlugin implements Listener, TabCompleter {
   private File getItemsFile(Entity cadaver) {
     Location loc = cadaver.getLocation();
     return new File(getFolder(cadaver.getWorld()),
-        getDeath(cadaver) + "@" + loc.getBlockX() + "|" + loc.getBlockY() + "|" + loc.getBlockZ() + ".yml");
+        getDeath(cadaver) + "_" + loc.getBlockX() + "_" + loc.getBlockY() + "_" + loc.getBlockZ() + ".yml");
   }
 
   // -----------------------------------------------------------------------------------------------------------------------

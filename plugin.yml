@@ -1,6 +1,6 @@
 name: DeathCadaver
 description: Spawn a cadaver at your death place.
-version: 1.0
+version: 1.1
 
 author: arboriginal
 website: https://www.spigotmc.org/resources/deathcadaver.71120/
@@ -10,7 +10,7 @@ depend: [ ]
 softdepend: [ ]
 
 api-version: 1.14
-database: true
+database: false
 
 main: me.arboriginal.DeathCadaver.DCPlugin
 
